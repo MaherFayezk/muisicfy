@@ -5,28 +5,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./resources/musicfy.css" rel="stylesheet">
+    <script src="./resources/main.js"></script>
     <title>Egyfy</title>
 </head>
 
 <body>
     <div id="header" name="header">
         <span id="logo" name="logo" >Egyfy</span>
-        <label>Usrername</label>
-        <input id="username" name="username" type="text">
-        <label>Password</label>
-        <input id="password" name="password" type="password">
-        <input id="submit" name="submit" type="button" >
+        <form id="login-form"action="#" method="post" >
+            <label>Usrername</label>
+            <input id="username" name="username" type="text" placeholder="username">
+            <label>Password</label>
+            <input id="password" name="password" type="password" placeholder="password">
+            <button id="login-btn"type="submit">Login</button>
+        </form>
+        <label id="login" name="login"></label>
+        <input id="search" name="search" type="text" placeholder="search for song">
+        <button id="search-btn" type="submit">search</button>
+        <button id="logout-btn"type="submit">Logout</button>
     </div>
     <div id="body" name="body">
+        <h1 id="welcome" name="welcome">Welcome to Egyfy</h1>
         <div id="music-list" name="music-list">
-            <h12>songs you may like</h12>
-            <table>
+            <h12 id="recomeded-h2">Recommedned for you</h12>
+            <table id="songs-table" name="songs-table">
+                <th>ID</th>
+                <th>Title</th>
+                <th>Actions</th>
             </table>
         </div>
+       
         <div id="user-list" name="user-list">
             <h12>Your playlist</h12>
-            <table>
-
+            <table id="list-table" name="list-table">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Release Date</th>
+                    <th>Actions</th>
+                  </tr>
             </table>
         </div>
     </div>
