@@ -1,7 +1,11 @@
 const songs = 
-[{"songId":1,"songTitle":"gaya","rleaseDate":"2006-01-01"},
-{"songId":2,"songTitle":"baya","rleaseDate":"2006-01-01"},
-{"songId":3,"songTitle":"haya","rleaseDate":"2006-01-01"}
+[{"songId":1,"songTitle":"Toba ll ragol","rleaseDate":"2006-01-01"},
+{"songId":2,"songTitle":"Lmaza kasort el omam","rleaseDate":"2006-01-01"},
+{"songId":3,"songTitle":"Yarab lmaza","rleaseDate":"2006-01-01"},
+{"songId":4,"songTitle":"Ez dawt estagabt","rleaseDate":"2006-01-01"},
+{"songId":5,"songTitle":"Ansat Ya Rab","rleaseDate":"2006-01-01"},
+{"songId":6,"songTitle":"Yarab la tobktny","rleaseDate":"2006-01-01"},
+{"songId":7,"songTitle":"Ayoha al Rab Rabna","rleaseDate":"2006-01-01"}
 ];
 
 module.exports = class song {

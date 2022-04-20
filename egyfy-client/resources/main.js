@@ -7,10 +7,39 @@ window.onload = function () {
     }
     document.getElementById('search-btn').onclick = function (event) {
         event.preventDefault();
-        let keyword= document.getElementById('search').value;
-        document.getElementById('recomeded-h2').innerHTML="results for "+keyword
+        let keyword = document.getElementById('search').value;
+        document.getElementById('recomeded-h2').innerHTML = "results for " + keyword
         searchSongs(keyword);
     }
+    document.getElementById('logout-btn').onclick = function (event) {
+        event.preventDefault();
+        logout();
+    }
+    let token = sessionStorage.getItem("token");
+    console.log(token);
+    if (token) {
+        loadHome();
+        getAllSongs();
+        getPlaylist();
+    }
+    else {
+        loadLogin();
+        document.getElementById('login-btn').onclick = function (event) {
+            event.preventDefault();
+            logUser();
+        }
+        document.getElementById('search-btn').onclick = function (event) {
+            event.preventDefault();
+            let keyword = document.getElementById('search').value;
+            document.getElementById('recomeded-h2').innerHTML = "results for " + keyword
+            searchSongs(keyword);
+        }
+        document.getElementById('logout-btn').onclick = function (event) {
+            event.preventDefault();
+            logout();
+        }
+    }
+
 }
 
 async function loadLogin() {
@@ -18,6 +47,10 @@ async function loadLogin() {
     document.getElementById('search-btn').style.display = 'none';
     document.getElementById('user-list').style.display = 'none';
     document.getElementById('music-list').style.display = 'none';
+    document.getElementById('play').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('login').style.display = 'block';
+    document.getElementById('welcome').style.display = 'block';
 }
 
 async function loadHome() {
@@ -28,6 +61,7 @@ async function loadHome() {
     document.getElementById('search-btn').style.display = 'block';
     document.getElementById('user-list').style.display = 'block';
     document.getElementById('music-list').style.display = 'block';
+    document.getElementById('play').style.display = 'block';
 }
 
 async function getAllSongs() {
@@ -46,7 +80,7 @@ async function getAllSongs() {
 async function searchSongs(keyword) {
 
     let isok = false;
-    let songs = await fetch("http://localhost:3000/songs/search?keyword="+keyword, {
+    let songs = await fetch("http://localhost:3000/songs/search?keyword=" + keyword, {
         method: "GET",
         headers: {
             "Content-type": "application/json",
@@ -62,10 +96,10 @@ function renderSongs(songs) {
     let placeholder = document.getElementById('data-output');
     let out = "";
     console.log(songs);
-    for (let i=0; i<songs.length;i++) {
-      out += `
+    for (let i = 0; i < songs.length; i++) {
+        out += `
         <tr>
-          <td style="text-align: center">${i+1}</td>
+          <td style="text-align: center">${i + 1}</td>
           <td>${songs[i].songTitle}</td>
           <td style="text-align: center">${songs[i].rleaseDate}</td>
           <td class="trButton"> <button type="submit" class="active" onclick='addtoList(${songs[i].songId})'>
@@ -77,8 +111,8 @@ function renderSongs(songs) {
     placeholder.innerHTML = out;
 }
 
-async function removeFromList(sId){
-    let playlist = await fetch('http://localhost:3000/users/playlist/songs/'+sId, {
+async function removeFromList(sId) {
+    let playlist = await fetch('http://localhost:3000/users/playlist/songs/' + sId, {
         method: "DELETE",
         headers: { "Content-type": "application/json", },
         body: JSON.stringify({
@@ -92,8 +126,8 @@ async function removeFromList(sId){
     getPlaylist();
 }
 
-async function addtoList(sId){
-    let playlist = await fetch('http://localhost:3000/users/playlist/songs/'+sId, {
+async function addtoList(sId) {
+    let playlist = await fetch('http://localhost:3000/users/playlist/songs/' + sId, {
         method: "POST",
         headers: { "Content-type": "application/json", },
         body: JSON.stringify({
@@ -107,11 +141,13 @@ async function addtoList(sId){
     getPlaylist();
 }
 
-async function getPlaylist(){
+async function getPlaylist() {
     let playlist = await fetch('http://localhost:3000/users/playlist', {
         method: "GET",
-        headers: { "Content-type": "application/json", 
-        "token":sessionStorage.getItem("token")}
+        headers: {
+            "Content-type": "application/json",
+            "token": sessionStorage.getItem("token")
+        }
     }).then((res) => {
         isok = res.ok;
         return res.json();
@@ -122,17 +158,34 @@ async function getPlaylist(){
 function renderPlaylist(songs) {
     let placeholder = document.getElementById('playlist-tbody');
     let out = "";
-    for (let i=0; i<songs.length;i++) {
-      out += `
+    for (let i = 0; i < songs.length; i++) {
+        out += `
         <tr>
-          <td style="text-align: center">${i+1}</td>
+          <td style="text-align: center">${i + 1}</td>
           <td>${songs[i].songTitle}</td>
           <td class="trButton"> <button type="submit" class="active" onclick='removeFromList(${songs[i].songId})'>
-          <i class="fa-solid fa-xmark"></i></td>
+          <i class="fa-solid fa-xmark"></i> </button>
+          <button type="submit" class="active" onclick='playSong(${songs[i].songId})'>
+          <i class="fa-solid fa-play"></i> </button>
+          </td>
         </tr>
       `;
     }
     placeholder.innerHTML = out;
+}
+
+ function playSong(sid){
+    let audio = document.getElementById("audio");
+    let source = document.getElementById("audio-src");
+    source.src = "./resources/songs/song"+sid+".mp3";
+    audio.load(); 
+    audio.play(); 
+    }
+ function logout(){
+    console.log("indie logout");
+    sessionStorage.clear();
+    document.location.reload(true)
+    //loadLogin();
 }
 
 async function logUser() {
@@ -157,5 +210,6 @@ async function logUser() {
         //document.getElementById('login').innerHTML='Welcome'+user.username;
         loadHome();
         getAllSongs();
+        getPlaylist();
     }
 }
