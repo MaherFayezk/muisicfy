@@ -9,7 +9,8 @@ module.exports = class song {
         return songs;
     }
     static findById(id) {
-        const index = songs.findIndex(song => song.id === id);
+
+        const index = songs.findIndex(song => song.songId == id);
         if (index > -1) {
             return songs[index];
         } else {
@@ -20,4 +21,9 @@ module.exports = class song {
         let res=songs.filter(song =>song.songTitle.toLowerCase().includes(keyword.toLowerCase()));
         return res;
     }
+    /*
+    static getList(idsList){
+        return idsList.map(c=>songsfind(s=>s.songId==c));
+    }
+    */
 }
